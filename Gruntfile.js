@@ -127,16 +127,21 @@ module.exports = function(grunt) {
 
   grunt.registerTask('upload', function(n) {
     if (grunt.option('prod')) {
-
+      grunt.task.run(['gitpush']);
     } else {
       grunt.task.run([ 'server-dev' ]);
     }
   });
 
-  grunt.registerTask('deploy', [
+  grunt.registerTask('deploy', function(n) {
     // add your deploy tasks here
+    if (grunt.option('prod')) {
+      grunt.task.run(['build', 'upload']);
+    } else {
+      grunt.taskrun(['build', 'server-dev']);
+    }
 
-  ]);
+  });
 
 
 };
