@@ -3,6 +3,27 @@ module.exports = function(grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
     concat: {
+      dist: {
+        src: [
+          'public/lib/jquery.js',
+          'public/lib/underscore.js',
+          'public/lib/backbone.js',
+          'public/lib/handlebars.js',
+        ],
+        dest: 'bin/lib-debug.js'
+      },
+      dist2: {
+        src: [
+          'public/client/app.js',
+          'public/client/link.js',
+          'public/client/links.js',
+          'public/client/linkView.js',
+          'public/client/linksView.js',
+          'public/client/createLinkView.js',
+          'public/client/router.js'
+        ],
+        dest: 'bin/app-debug.js'
+      }
     },
 
     mochaTest: {
@@ -21,15 +42,29 @@ module.exports = function(grunt) {
     },
 
     uglify: {
+      myTarget: {
+        files: {
+          'bin/app.js' : ['bin/app-debug.js'],
+          'bin/lib.js' : ['bin/lib-debug.js']
+        }
+      }
     },
 
     eslint: {
+      options: {
+        quiet: true
+      },
       target: [
-        // Add list of files to lint here
+        '**/*.js'
       ]
     },
 
     cssmin: {
+      target: {
+        files: {
+          'bin/style.min.css': ['public/style.css']
+        }
+      }
     },
 
     watch: {
@@ -87,6 +122,7 @@ module.exports = function(grunt) {
   ]);
 
   grunt.registerTask('build', [
+    'eslint', 'test', 'concat', 'uglify', 'cssmin'
   ]);
 
   grunt.registerTask('upload', function(n) {
@@ -99,6 +135,7 @@ module.exports = function(grunt) {
 
   grunt.registerTask('deploy', [
     // add your deploy tasks here
+
   ]);
 
 
